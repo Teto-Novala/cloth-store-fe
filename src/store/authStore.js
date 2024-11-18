@@ -1,11 +1,14 @@
 import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
+import { useLocalStorage } from "@vueuse/core";
 
 export const useUserStore = defineStore("user", () => {
-  const user = reactive({});
-  const getToken = computed(() => {
-    user.token;
-  });
+  const data = reactive(
+    useLocalStorage("user", {
+      user: "",
+      token: "",
+    })
+  );
 
-  return { user, getToken };
+  return { data };
 });

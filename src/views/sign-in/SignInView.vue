@@ -8,7 +8,10 @@
         class="w-full h-72 object-cover object-center"
       />
       <h1 class="font-volkhov text-2xl">ASPA</h1>
-      <form class="w-full flex flex-col gap-y-6">
+      <form
+        @submit.prevent="signInHandler"
+        class="w-full flex flex-col gap-y-6"
+      >
         <Input
           type="email"
           placeholder="Email"
@@ -31,7 +34,7 @@
           class="text-red-500 font-poppins"
           >{{ error.$message }}</span
         >
-        <Button @some-event="signInHandler">Sign In</Button>
+        <Button type="submit">Sign In</Button>
         <Button @some-event="registerHandler">Register Now</Button>
         <RouterLink
           to="/forgotpassword"
@@ -47,6 +50,7 @@
 <script setup>
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
+import { useUserStore } from "@/store/authStore";
 import useVuelidate from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
 import axios from "axios";
@@ -56,6 +60,7 @@ import { useToast } from "vue-toastification";
 
 const router = useRouter();
 const toast = useToast();
+const store = useUserStore();
 
 const data = reactive({
   email: "",
@@ -83,6 +88,14 @@ const signInHandler = async () => {
         "http://localhost:5000/api/auth/signin",
         data
       );
+
+      store.$patch({
+        data: {
+          user: response.data.user,
+          token: response.data.token,
+        },
+      });
+      router.push("/");
     } catch (error) {
       toast.error(error.response.data.error);
     }
