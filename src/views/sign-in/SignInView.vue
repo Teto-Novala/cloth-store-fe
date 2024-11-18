@@ -40,7 +40,9 @@
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import { reactive } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
+
+const router = useRouter();
 
 const data = reactive({
   email: "",
@@ -48,6 +50,6 @@ const data = reactive({
 });
 
 const registerHandler = () => {
-  alert("hi");
+  router.push("/register");
 };
 </script>
