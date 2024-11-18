@@ -12,18 +12,26 @@
         <Input
           type="email"
           placeholder="Email"
-          :model="data.email"
+          v-model:model="data.email"
         />
+        <span
+          v-for="error in v$.email.$errors"
+          :key="error.$uid"
+          class="text-red-500 font-poppins"
+          >{{ error.$message }}</span
+        >
         <Input
           type="password"
           placeholder="Password"
-          :model="data.password"
+          v-model:model="data.password"
         />
-        <button
-          class="bg-primary px-3 py-2 text-white font-poppins rounded-lg box-border border border-primary hover:border-secondary hover:bg-white hover:text-secondary transition-all"
+        <span
+          v-for="error in v$.password.$errors"
+          :key="error.$uid"
+          class="text-red-500 font-poppins"
+          >{{ error.$message }}</span
         >
-          Sign In
-        </button>
+        <Button @some-event="signInHandler">Sign In</Button>
         <Button @some-event="registerHandler">Register Now</Button>
         <RouterLink
           to="/forgotpassword"
@@ -39,17 +47,39 @@
 <script setup>
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
-import { reactive } from "vue";
+import useVuelidate from "@vuelidate/core";
+import { email, required } from "@vuelidate/validators";
+import { computed, reactive } from "vue";
 import { RouterLink, useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
 const router = useRouter();
+const toast = useToast();
 
 const data = reactive({
   email: "",
   password: "",
 });
 
+const rules = computed(() => {
+  return {
+    email: { required, email },
+    password: { required },
+  };
+});
+
+const v$ = useVuelidate(rules, data);
+
 const registerHandler = () => {
   router.push("/register");
+};
+
+const signInHandler = async () => {
+  const result = await v$.value.$validate();
+  if (result) {
+    toast.success("Berhasil");
+  } else {
+    console.log(result);
+  }
 };
 </script>
