@@ -9,15 +9,15 @@
       />
       <h1 class="font-volkhov text-2xl">ASPA</h1>
       <form class="w-full flex flex-col gap-y-6">
-        <input
+        <Input
           type="email"
           placeholder="Email"
-          class="font-poppins text-lg outline-none border-b border-primary w-full pb-1"
+          :model="data.email"
         />
-        <input
+        <Input
           type="password"
-          class="font-poppins text-lg outline-none border-b border-primary w-full pb-1"
           placeholder="Password"
+          :model="data.password"
         />
         <button
           class="bg-primary px-3 py-2 text-white font-poppins rounded-lg box-border border border-primary hover:border-secondary hover:bg-white hover:text-secondary transition-all"
@@ -41,5 +41,12 @@
 </template>
 
 <script setup>
+import Input from "@/components/Input.vue";
+import { reactive } from "vue";
 import { RouterLink } from "vue-router";
+
+const data = reactive({
+  email: "",
+  password: "",
+});
 </script>
