@@ -49,6 +49,7 @@ import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import useVuelidate from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
+import axios from "axios";
 import { computed, reactive } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -77,9 +78,14 @@ const registerHandler = () => {
 const signInHandler = async () => {
   const result = await v$.value.$validate();
   if (result) {
-    toast.success("Berhasil");
-  } else {
-    console.log(result);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/signin",
+        data
+      );
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
   }
 };
 </script>
