@@ -24,11 +24,7 @@
         >
           Sign In
         </button>
-        <button
-          class="bg-primary px-3 py-2 text-white font-poppins rounded-lg box-border border border-primary hover:border-secondary hover:bg-white hover:text-secondary transition-all"
-        >
-          Register Now
-        </button>
+        <Button @some-event="registerHandler">Register Now</Button>
         <RouterLink
           to="/forgotpassword"
           class="self-end text-secondary hover:underline transition-all"
@@ -41,6 +37,7 @@
 </template>
 
 <script setup>
+import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import { reactive } from "vue";
 import { RouterLink } from "vue-router";
@@ -49,4 +46,8 @@ const data = reactive({
   email: "",
   password: "",
 });
+
+const registerHandler = () => {
+  alert("hi");
+};
 </script>
