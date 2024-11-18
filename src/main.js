@@ -1,4 +1,6 @@
 import "./assets/main.css";
+import "@fontsource/volkhov";
+import "@fontsource/poppins";
 
 import { createApp } from "vue";
 import App from "./App.vue";

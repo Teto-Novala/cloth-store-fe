@@ -2,6 +2,8 @@
 import { RouterView } from "vue-router";
 </script>
 
-<template><RouterView /></template>
+<template>
+  <main><RouterView /></main>
+</template>
 
 <style scoped></style>

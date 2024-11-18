@@ -7,6 +7,10 @@ export default {
         primary: "#000",
         secondary: "#5B86E5",
       },
+      fontFamily: {
+        volkhov: ["Volkhov", "serif"],
+        poppins: ["Poppins", "serif"],
+      },
     },
   },
   plugins: [],
