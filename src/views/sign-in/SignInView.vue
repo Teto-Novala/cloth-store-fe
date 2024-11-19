@@ -88,6 +88,51 @@
       </form>
     </div>
     <!-- tablet end -->
+
+    <!-- desktop start -->
+    <div class="hidden xl:flex xl:items-center xl:gap-x-28 xl:h-screen">
+      <img
+        src="/src/assets/images/sign-in/sign-in.jpg"
+        alt="sign-in"
+        class="w-1/2 h-5/6 object-cover object-center rounded-lg"
+      />
+      <form
+        @submit.prevent="signInHandler"
+        class="flex flex-col justify-center gap-y-8 w-1/2 h-5/6"
+      >
+        <h1 class="font-volkhov text-4xl">ASPA</h1>
+        <Input
+          type="email"
+          placeholder="Email"
+          v-model:model="data.email"
+        />
+        <span
+          v-for="error in v$.email.$errors"
+          :key="error.$uid"
+          class="text-red-500 font-poppins"
+          >{{ error.$message }}</span
+        >
+        <Input
+          type="password"
+          placeholder="Password"
+          v-model:model="data.password"
+        />
+        <span
+          v-for="error in v$.password.$errors"
+          :key="error.$uid"
+          class="text-red-500 font-poppins"
+          >{{ error.$message }}</span
+        >
+        <Button type="submit">Sign In</Button>
+        <Button @some-event="registerHandler">Register Now</Button>
+        <RouterLink
+          to="/forgotpassword"
+          class="self-end text-secondary hover:underline transition-all"
+          >Forgot Password?</RouterLink
+        >
+      </form>
+    </div>
+    <!-- desktop end -->
   </section>
 </template>
 
