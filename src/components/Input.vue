@@ -3,7 +3,7 @@
     :placeholder="placeholder"
     :type="type"
     v-model="model"
-    class="font-poppins text-lg outline-none border-b border-primary w-full pb-1"
+    class="font-poppins text-lg md:text-xl outline-none border-b border-primary w-full pb-1"
   />
 </template>
 
