@@ -48,6 +48,56 @@
       </p>
     </div>
     <!-- mobile end -->
+
+    <!-- tablet start -->
+    <div class="hidden md:flex md:flex-col md:gap-y-5 xl:hidden">
+      <img
+        src="/src/assets/images/forgot-password/forgot-password.jpg"
+        alt="forgot password"
+        class="rounded-lg"
+      />
+      <h1 class="font-volkhov text-center text-4xl">ASPA</h1>
+      <h2 class="font-volkhov text-xl">Forgot Password</h2>
+      <form
+        @submit.prevent="submitHandler"
+        class="flex flex-col gap-y-5"
+      >
+        <Input
+          placeholder="Firstname"
+          v-model:model="form.firstname"
+        />
+        <Input
+          placeholder="Lastname"
+          v-model:model="form.lastname"
+        />
+        <Input
+          placeholder="Email"
+          type="email"
+          v-model:model="form.email"
+        />
+        <Input
+          placeholder="Phone"
+          v-model:model="form.phone"
+        />
+        <Button
+          type="submit"
+          class="w-full"
+          >Send Confirmation Code</Button
+        >
+      </form>
+      <p class="font-poppins text-right">
+        Already have an account?
+        <span
+          ><RouterLink
+            class="text-secondary transition-all hover:underline"
+            to="/signin"
+            >Login</RouterLink
+          ></span
+        >
+      </p>
+    </div>
+    <!-- tablet end -->
+
     <!-- pop up start -->
     <div
       class="w-full h-screen bg-black/50 fixed z-50 top-0 left-0 px-8 flex items-center"
