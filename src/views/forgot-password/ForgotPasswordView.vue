@@ -57,6 +57,7 @@ import Input from "@/components/Input.vue";
 import { phoneValidate } from "@/validations/phone";
 import useVuelidate from "@vuelidate/core";
 import { helpers, minLength, required, email } from "@vuelidate/validators";
+import axios from "axios";
 import { computed, reactive } from "vue";
 import { RouterLink } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -93,7 +94,14 @@ const submitHandler = async () => {
   const result = await v$.value.$validate();
   console.log(result);
   if (result) {
-    console.log(form);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/user/forgot",
+        form
+      );
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   } else {
     toast.error(v$.value.$errors[0].$message);
   }
