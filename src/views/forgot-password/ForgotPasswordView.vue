@@ -1,5 +1,101 @@
 <template>
-  <section>forgot password</section>
+  <section class="px-8">
+    <!-- mobile start -->
+    <div class="md:hidden flex flex-col gap-y-6 pb-12">
+      <img
+        src="/src/assets/images/forgot-password/forgot-password.jpg"
+        alt="forgot password"
+        class="rounded-lg"
+      />
+      <h1 class="font-volkhov text-center text-3xl">ASPA</h1>
+      <h2 class="font-volkhov text-lg">Forgot Password</h2>
+      <form
+        @submit.prevent="submitHandler"
+        class="flex flex-col gap-y-5"
+      >
+        <Input
+          placeholder="Firstname"
+          v-model:model="form.firstname"
+        />
+        <Input
+          placeholder="Lastname"
+          v-model:model="form.lastname"
+        />
+        <Input
+          placeholder="Email"
+          type="email"
+          v-model:model="form.email"
+        />
+        <Input
+          placeholder="Phone"
+          v-model:model="form.phone"
+        />
+        <Button
+          type="submit"
+          class="w-full"
+          >Send Confirmation Code</Button
+        >
+      </form>
+      <p class="font-poppins text-right">
+        Already have an account?
+        <span
+          ><RouterLink
+            class="text-secondary transition-all hover:underline"
+            to="/signin"
+            >Login</RouterLink
+          ></span
+        >
+      </p>
+    </div>
+    <!-- mobile end -->
+  </section>
 </template>
 
-<script setup></script>
+<script setup>
+import Button from "@/components/Button.vue";
+import Input from "@/components/Input.vue";
+import { phoneValidate } from "@/validations/phone";
+import useVuelidate from "@vuelidate/core";
+import { helpers, minLength, required, email } from "@vuelidate/validators";
+import { computed, reactive } from "vue";
+import { RouterLink } from "vue-router";
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
+
+const form = reactive({
+  firstname: "",
+  lastname: "",
+  email: "",
+  phone: "",
+});
+
+const rules = computed(() => {
+  return {
+    firstname: {
+      required: helpers.withMessage("Firstname harus di isi", required),
+    },
+    email: {
+      required: helpers.withMessage("Email harus di isi", required),
+      email,
+    },
+    phone: {
+      required: helpers.withMessage("Nomor harus di isi", required),
+      minLength: helpers.withMessage("Panjang nomor kurang", minLength(13)),
+      phoneValidate: helpers.withMessage("Bukan format nomor", phoneValidate),
+    },
+  };
+});
+
+const v$ = useVuelidate(rules, form);
+
+const submitHandler = async () => {
+  const result = await v$.value.$validate();
+  console.log(result);
+  if (result) {
+    console.log(form);
+  } else {
+    toast.error(v$.value.$errors[0].$message);
+  }
+};
+</script>
