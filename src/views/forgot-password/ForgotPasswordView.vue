@@ -48,21 +48,44 @@
       </p>
     </div>
     <!-- mobile end -->
+    <!-- pop up start -->
+    <div
+      class="w-full h-screen bg-black/50 fixed z-50 top-0 left-0 px-8 flex items-center"
+      v-if="isConfirm"
+    >
+      <div
+        class="bg-white w-full h-fit p-4 rounded-lg flex flex-col justify-center text-center gap-y-4 font-poppins"
+      >
+        <p class="text-xl">Your confirmation code is</p>
+        <p class="text-2xl">{{ store.data.confirmationCode }}</p>
+        <Button
+          @some-event="popUpHandler"
+          class="w-full"
+          >Oke</Button
+        >
+      </div>
+    </div>
+    <!-- pop up end -->
   </section>
 </template>
 
 <script setup>
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
+import { useForgotStore } from "@/store/forgotStore";
 import { phoneValidate } from "@/validations/phone";
 import useVuelidate from "@vuelidate/core";
 import { helpers, minLength, required, email } from "@vuelidate/validators";
 import axios from "axios";
-import { computed, reactive } from "vue";
-import { RouterLink } from "vue-router";
+import { computed, reactive, ref } from "vue";
+import { RouterLink, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 
 const toast = useToast();
+const store = useForgotStore();
+const router = useRouter();
+
+const isConfirm = ref(false);
 
 const form = reactive({
   firstname: "",
@@ -91,19 +114,35 @@ const rules = computed(() => {
 const v$ = useVuelidate(rules, form);
 
 const submitHandler = async () => {
+  if (store.data.confirmationCode !== "") {
+    isConfirm.value = true;
+    return;
+  }
   const result = await v$.value.$validate();
-  console.log(result);
   if (result) {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/user/forgot",
         form
       );
+      console.log(response.data);
+      store.$patch({
+        data: {
+          userId: response.data.user.id,
+          confirmationCode: response.data.confirmationCode,
+        },
+      });
+      isConfirm.value = true;
     } catch (error) {
       toast.error(error.response.data.message);
     }
   } else {
     toast.error(v$.value.$errors[0].$message);
   }
+};
+
+const popUpHandler = () => {
+  isConfirm.value = false;
+  router.push("/confirmationcode");
 };
 </script>

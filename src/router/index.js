@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import SignInView from "@/views/sign-in/SignInView.vue";
 import ForgotPasswordView from "@/views/forgot-password/ForgotPasswordView.vue";
 import RegisterView from "@/views/register/RegisterView.vue";
+import ConfirmationCodeView from "@/views/confirmation-code/ConfirmationCodeView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +35,11 @@ const router = createRouter({
       path: "/register",
       name: "register",
       component: RegisterView,
+    },
+    {
+      path: "/confirmationcode",
+      name: "confirmation-code",
+      component: ConfirmationCodeView,
     },
   ],
 });
