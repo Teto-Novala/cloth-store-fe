@@ -27,7 +27,9 @@
     </div>
     <!-- mobile end -->
     <!-- tablet start -->
-    <div class="hidden md:flex md:flex-col md:items-center md:gap-y-4">
+    <div
+      class="hidden xl:hidden md:flex md:flex-col md:items-center md:gap-y-4"
+    >
       <img
         src="/src/assets/images/forgot-password/forgot-password.jpg"
         alt="confirmation code"
@@ -54,6 +56,36 @@
       </form>
     </div>
     <!-- tablet end -->
+    <!-- desktop start -->
+    <div class="hidden xl:flex xl:items-center xl:gap-x-16 xl:h-screen">
+      <img
+        src="/src/assets/images/forgot-password/forgot-password.jpg"
+        alt="confirm"
+        class="w-1/2 h-4/5 rounded-lg object-cover"
+      />
+      <div class="w-1/2 font-volkhov flex flex-col justify-between gap-y-16">
+        <div class="flex flex-col justify-between gap-y-9">
+          <h1 class="text-4xl">ASPA</h1>
+          <h2 class="text-lg">Enter The Confirmation Code</h2>
+        </div>
+        <form
+          @submit.prevent="submitHandler"
+          class="flex flex-col gap-y-5"
+        >
+          <Input
+            placeholder="Confirmation Code"
+            v-model:model="code"
+            maxlength="6"
+          />
+          <Button
+            type="submit"
+            class="w-full"
+            >Recover Account</Button
+          >
+        </form>
+      </div>
+    </div>
+    <!-- desktop end -->
   </section>
 </template>
 
@@ -94,7 +126,7 @@ const submitHandler = async () => {
       }
     );
     toast.success(response.data.message, {
-      duration: 1000,
+      duration: 500,
     });
     store.$reset();
   } catch (error) {
