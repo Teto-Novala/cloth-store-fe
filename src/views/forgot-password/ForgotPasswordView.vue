@@ -229,7 +229,7 @@ const submitHandler = async () => {
       console.log(response.data);
       store.$patch({
         data: {
-          userId: response.data.user.id,
+          id: response.data.id,
           confirmationCode: response.data.confirmationCode,
         },
       });

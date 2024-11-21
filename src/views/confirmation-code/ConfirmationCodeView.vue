@@ -9,8 +9,15 @@
       />
       <h1 class="font-volkhov text-3xl">ASPA</h1>
       <h2 class="self-start font-volkhov">Enter The Confirmation Code</h2>
-      <form class="flex flex-col gap-y-4 w-full">
-        <Input placeholder="Confirmation Code" />
+      <form
+        @submit.prevent="submitHandler"
+        class="flex flex-col gap-y-4 w-full"
+      >
+        <Input
+          placeholder="Confirmation Code"
+          v-model:model="code"
+          maxlength="6"
+        />
         <Button
           type="submit"
           class="w-full"
@@ -25,4 +32,53 @@
 <script setup>
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
+import { useForgotStore } from "@/store/forgotStore";
+import axios from "axios";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
+
+const store = useForgotStore();
+const toast = useToast();
+const router = useRouter();
+
+if (store.data.id === "") {
+  toast.error("Anda masih belum mendapatkan kode konfirmasi", {
+    duration: 2000,
+    onClose: () => router.push("/forgotpassword"),
+  });
+}
+
+const code = ref("");
+
+const submitHandler = async () => {
+  if (code.value === "") {
+    toast.error("Kode tidak boleh kosong");
+    return;
+  }
+
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/user/confirm",
+      {
+        id: store.data.id,
+        confirmationCode: code.value,
+      }
+    );
+    toast.success(response.data.message, {
+      duration: 1000,
+    });
+    store.$reset();
+  } catch (error) {
+    console.error(error);
+
+    if (error.response.data.statusCode === 404) {
+      toast.error(error.response.data.message);
+      router.push("/forgotpassword");
+      store.$reset();
+      return;
+    }
+    toast.error(error.response.data.message);
+  }
+};
 </script>

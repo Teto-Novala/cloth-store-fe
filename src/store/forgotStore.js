@@ -5,13 +5,13 @@ import { reactive } from "vue";
 export const useForgotStore = defineStore("forgot", () => {
   const data = reactive(
     useLocalStorage("forgot", {
-      userId: "",
+      id: "",
       confirmationCode: "",
     })
   );
 
   function $reset() {
-    data.value.userId = "";
+    data.value.id = "";
     data.value.confirmationCode = "";
     localStorage.removeItem("forgot");
   }
