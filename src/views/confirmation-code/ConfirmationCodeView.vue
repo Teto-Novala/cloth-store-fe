@@ -26,6 +26,34 @@
       </form>
     </div>
     <!-- mobile end -->
+    <!-- tablet start -->
+    <div class="hidden md:flex md:flex-col md:items-center md:gap-y-4">
+      <img
+        src="/src/assets/images/forgot-password/forgot-password.jpg"
+        alt="confirmation code"
+        class="rounded-lg"
+      />
+      <h1 class="font-volkhov text-4xl">ASPA</h1>
+      <h2 class="self-start font-volkhov text-lg">
+        Enter The Confirmation Code
+      </h2>
+      <form
+        @submit.prevent="submitHandler"
+        class="flex flex-col gap-y-8 w-full"
+      >
+        <Input
+          placeholder="Confirmation Code"
+          v-model:model="code"
+          maxlength="6"
+        />
+        <Button
+          type="submit"
+          class="w-full"
+          >Recover Account</Button
+        >
+      </form>
+    </div>
+    <!-- tablet end -->
   </section>
 </template>
 
